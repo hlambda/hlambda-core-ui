@@ -170,8 +170,6 @@ function Home() {
           </Typography>
           <List>
             {[
-              '- Import/Export metadata via CLI.',
-              '- Reload hlambda via CLI.',
               '- Add visual studio code for web as the editor for the files.',
               '- Implement PM2 to handle reloading for zero downtime.',
               '- Home screen should support console and file viewer at the same time.',

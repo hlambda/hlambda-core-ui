@@ -15,6 +15,7 @@ import CommandsPage from './views/Commands';
 import ConfigurationPage from './views/Configuration';
 import RoutesPage from './views/Routes';
 import LogsPage from './views/Logs';
+import ConstantsPage from './views/Constants';
 import ErrorsPage from './views/Errors';
 import EventsPage from './views/Events';
 import MetadataPage from './views/Metadata';
@@ -167,6 +168,16 @@ function App() {
               <RequireAuth>
                 <Page title="Console | Hlambda">
                   <LogsPage />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/constants"
+            element={
+              <RequireAuth>
+                <Page title="Console | Hlambda">
+                  <ConstantsPage />
                 </Page>
               </RequireAuth>
             }

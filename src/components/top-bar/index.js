@@ -40,6 +40,10 @@ const pages = [
     url: '/env',
   },
   {
+    name: 'Constants',
+    url: '/constants',
+  },
+  {
     name: 'Errors',
     url: '/errors',
   },
