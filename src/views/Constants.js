@@ -37,15 +37,25 @@ function Constants() {
     const results = await get('/console/api/v1/constants');
     if (response.ok) {
       setConstants(JSON.stringify(results, null, 2));
-    } else {
-      toast.error('Request errored out...');
-      setConstants(JSON.stringify(results));
     }
+    // else {
+    //   toast.error('Request errored out...');
+    //   setConstants(JSON.stringify(results));
+    // }
   };
 
   React.useEffect(() => {
     getConstantsDefinitions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  React.useEffect(() => {
+    if (error) {
+      toast.error('Request errored out...');
+      console.log(JSON.stringify(response.data));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   return (
     <>

@@ -54,7 +54,7 @@ function ConsoleEditor({ language, defaultFile }) {
       toast.success('Saved!');
       console.log(results);
     } else {
-      toast.error('Request errored out...');
+      // toast.error('Request errored out...');
       setEditorCodeValue('');
     }
   };
@@ -74,7 +74,7 @@ function ConsoleEditor({ language, defaultFile }) {
       setValues({ ...values, editorCodeData: text });
       console.log(text);
     } else {
-      toast.error('Request errored out...');
+      // toast.error('Request errored out...');
       setValues({ ...values, editorCodeData: '' });
     }
   };
@@ -85,7 +85,16 @@ function ConsoleEditor({ language, defaultFile }) {
 
   React.useEffect(() => {
     _handleReload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.path]);
+
+  React.useEffect(() => {
+    if (error) {
+      toast.error('Request errored out...');
+      console.log(JSON.stringify(response.data));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   const checkLanguage = () => {
     if (['.yml', '.yaml'].includes(values.path.substr(-5))) {

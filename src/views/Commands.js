@@ -40,6 +40,7 @@ function Commands() {
       ]);
       setTerminalName(outputString);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const _executeCommand = async (terminalInput) => {

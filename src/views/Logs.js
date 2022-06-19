@@ -45,20 +45,28 @@ function Logs() {
     // Do things...
     const results = await get('/console/api/v1/logs?type=text');
     if (response.ok) {
-      // toast.success('yeey');
       const ansi_up = new AnsiUp();
       const html = ansi_up.ansi_to_html(results);
       setLogs(html);
-    } else {
-      toast.error('Request errored out...');
-      setLogs(JSON.stringify(results));
     }
-    autoScroll && executeScroll();
   };
 
   React.useEffect(() => {
     getLogs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  React.useEffect(() => {
+    if (error) {
+      toast.error('Request errored out...');
+      setLogs(JSON.stringify(response.data));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
+
+  React.useEffect(() => {
+    autoScroll && executeScroll();
+  });
 
   const _handleSwitchChange = (event) => {
     setAutoScroll(!autoScroll);

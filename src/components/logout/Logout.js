@@ -21,6 +21,7 @@ export default function Logout() {
       await auth.signout(); // Wipe data from local storage
       navigate(`/login`);
     }, 1337);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   return (

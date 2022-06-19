@@ -37,15 +37,25 @@ function Errors() {
     const results = await get('/console/api/v1/errors');
     if (response.ok) {
       setErrors(JSON.stringify(results, null, 2));
-    } else {
-      toast.error('Request errored out...');
-      setErrors(JSON.stringify(results));
     }
+    // else {
+    //   toast.error('Request errored out...');
+    //   setErrors(JSON.stringify(results));
+    // }
   };
 
   React.useEffect(() => {
     getErrorsDefinitions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  React.useEffect(() => {
+    if (error) {
+      toast.error('Request errored out...');
+      console.log(JSON.stringify(response.data));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
 
   return (
     <>
