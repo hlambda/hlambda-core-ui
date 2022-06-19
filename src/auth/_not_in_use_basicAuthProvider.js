@@ -7,7 +7,7 @@ const basicAuthProvider = {
   signout(callback) {
     basicAuthProvider.isAuthenticated = false;
     setTimeout(callback, 100);
-  }
+  },
 };
 
 export { basicAuthProvider };

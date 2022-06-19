@@ -35,6 +35,7 @@
     "build": "export REACT_APP_GIT_HEAD_HASH=$(git rev-parse --short=8 HEAD) && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "lint-fix": "./node_modules/.bin/eslint --fix --ext .js,.jsx --ignore-pattern public .",
     "lint": "./node_modules/.bin/eslint --ext .js,.jsx --ignore-pattern public .",
     "deploy": "echo \"Deploying to S3\" ; aws s3 sync ./build/ s3://$AWS_S3_BUCKET_NAME ; echo \"Invalidating CDN cache...\" ; aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths '/*';"
   },
