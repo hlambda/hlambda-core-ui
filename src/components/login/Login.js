@@ -91,7 +91,8 @@ export default function Login() {
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
+                    //onClick={handleClickShowPassword}
+                    //onMouseUp={handleMouseDownPassword}
                     onMouseDown={handleMouseDownPassword}
                   >
                     {showPassword ? <Visibility /> : <VisibilityOff />}
