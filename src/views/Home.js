@@ -111,7 +111,8 @@ function Home() {
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
+                  //onClick={handleClickShowPassword}
+                  //onMouseUp={handleMouseDownPassword}
                   onMouseDown={handleMouseDownPassword}
                 >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
