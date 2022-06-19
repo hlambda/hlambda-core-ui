@@ -12,6 +12,10 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
+env:
+  AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+  AWS_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+
 jobs:
   push_to_registry:
     name: Push UI Artefacts to AWS S3 / CDN
