@@ -25,7 +25,7 @@ import Fab from '@mui/material/Fab';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 import TopBar from './../components/top-bar';
-import ConsoleEditor from './../components/editor/Editor';
+import CopyToClipboard from './../components/copy-to-clipboard/CopyToClipboard';
 
 import useFetch from 'use-http';
 import { toast } from 'react-toastify';
@@ -54,6 +54,8 @@ function Home() {
   const [logs, setLogs] = React.useState('');
   const [autoScroll, setAutoScroll] = React.useState(true);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showSecretInCommand, setShowSecretInCommand] = React.useState(false);
+  const [timestampOnRender, setTimestampOnRender] = React.useState(Date.now());
 
   const codeRef = React.useRef(null);
 
@@ -100,6 +102,15 @@ function Home() {
     setAutoScroll(!autoScroll);
   };
 
+  const generateCloneCommand = (showSecret) => {
+    const url = `${window.location.protocol}//${window.location.hostname}${
+      window.location.port === '80' ? '' : `:${window.location.port}`
+    }`;
+    return showSecret
+      ? `hl clone ${`hlapp${timestampOnRender}`} --admin-secret="${auth.getToken()}" ${url}`
+      : `hl clone ${`hlapp${timestampOnRender}`} --admin-secret="*********" ${url}`;
+  };
+
   return (
     <>
       <TopBar />
@@ -118,6 +129,10 @@ function Home() {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
+                <CopyToClipboard
+                  aria-label="copy admin secret"
+                  textToCopy={auth.getToken()}
+                />
                 <IconButton
                   aria-label="toggle password visibility"
                   //onClick={handleClickShowPassword}
@@ -125,6 +140,40 @@ function Home() {
                   onMouseDown={handleMouseDownPassword}
                 >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          margin="normal"
+          required
+          disabled
+          fullWidth
+          name="clone-command"
+          label="Clone server metadata"
+          type={'text'}
+          id="clone-command"
+          autoComplete="clone-command"
+          value={
+            showSecretInCommand
+              ? generateCloneCommand(true)
+              : generateCloneCommand(false)
+          }
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <CopyToClipboard
+                  aria-label="copy clone command"
+                  textToCopy={generateCloneCommand(true)}
+                />
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onMouseDown={() =>
+                    setShowSecretInCommand(!showSecretInCommand)
+                  }
+                >
+                  {showSecretInCommand ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
             ),
@@ -163,35 +212,6 @@ function Home() {
             label="Auto scroll to bottom."
           />
         </FormGroup>
-        <Divider
-          style={{ paddingTop: '1rem', paddingBottom: '1rem' }}
-        ></Divider>
-        <Box
-          sx={{
-            marginTop: 2,
-            marginBottom: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Typography component="h3" variant="h6">
-            Roadmap for next release:
-          </Typography>
-          <List>
-            {[
-              '- Add visual studio code for web as the editor for the files.',
-              '- Implement PM2 to handle reloading for zero downtime.',
-              '- Home screen should support console and file viewer at the same time.',
-              '- Force users to handle API errors, and edge cases by providing a solution for managing errors.',
-              '- Tab complete in the shell',
-            ].map((item) => (
-              <ListItem key={item}>
-                <ListItemText primary={item} />
-              </ListItem>
-            ))}
-          </List>
-        </Box>
       </Container>
       <Fab
         style={{

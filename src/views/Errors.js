@@ -13,6 +13,8 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
+import Editor from '@monaco-editor/react';
+
 const StyledPreCodeTag = styled('pre')(
   ({ theme }) => `
   background-color: #000;
@@ -65,14 +67,32 @@ function Errors() {
           This is the list of all possible errors defined by the `errors.*.js`
           files:
         </div>
-        <div style={{ paddingTop: '20px' }}>
+        <div
+          style={{
+            width: '100%',
+            paddingTop: '20px',
+          }}
+        >
+          <Editor
+            height="calc(100vh - 12rem)"
+            language={'json'}
+            defaultValue={errors}
+            value={errors}
+            theme="vs-dark"
+            readOnly={true}
+            onMount={(editor) => {
+              editor.updateOptions({ readOnly: true });
+            }}
+          />
+        </div>
+        {/* <div style={{ paddingTop: '20px' }}>
           <StyledPreCodeTag
             ref={errorBoxRef}
             dangerouslySetInnerHTML={{
               __html: loading ? 'Loading...' : errors,
             }}
           />
-        </div>
+        </div> */}
       </Container>
     </>
   );

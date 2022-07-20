@@ -1,3 +1,14 @@
+# Release 0.0.5
+
+- Fixed noopener rel to Login
+- Added env banner component to UI
+- Added version banner component to UI
+- Update Errors and Constants to use ReadOnly Monaco Editor
+- Add current version to App Bar
+- Added Settings
+- Added Documentation
+- Added News
+
 # Release 0.0.4
 
 - Added CHANGELOG.md

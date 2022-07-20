@@ -4,7 +4,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
-//import './app.css';
 
 import Login from './components/login/Login';
 import Logout from './components/logout/Logout';
@@ -20,9 +19,11 @@ import ErrorsPage from './views/Errors';
 import EventsPage from './views/Events';
 import MetadataPage from './views/Metadata';
 import SettingsPage from './views/Settings';
+import DocumentationPage from './views/Docs';
+import NewsPage from './views/News';
 import VsCodeWebPage from './views/VsCodeWebPage';
 
-//import DashboardPage from './components/dashboard/Dashboard';
+// import DashboardPage from './components/dashboard/Dashboard';
 
 import {
   BrowserRouter,
@@ -208,6 +209,26 @@ function App() {
               <RequireAuth>
                 <Page title="Console | Hlambda">
                   <MetadataPage />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/documentation"
+            element={
+              <RequireAuth>
+                <Page title="Console | Hlambda">
+                  <DocumentationPage />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/news"
+            element={
+              <RequireAuth>
+                <Page title="Console | Hlambda">
+                  <NewsPage />
                 </Page>
               </RequireAuth>
             }

@@ -10,13 +10,20 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import Link from '@mui/material/Link';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
+import NewsIcon from '@mui/icons-material/NewReleases';
+import DocumentationIcon from '@mui/icons-material/Description';
 
 import { useNavigate } from 'react-router-dom';
 import useFetch from 'use-http';
 import { toast } from 'react-toastify';
+
+import Banner from './../banner/Banner';
+
+import getSessionStorageOrDefault from './../../utils/getSessionStorageOrDefault';
 
 const pages = [
   {
@@ -76,6 +83,10 @@ const ResponsiveAppBar = () => {
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  // const [serverVersion, setServerVersion] = React.useState(null);
+  const [serverVersion, setServerVersion] = React.useState(
+    getSessionStorageOrDefault(`server-version`, null)
+  );
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -92,8 +103,28 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
+  const getServerVersion = async () => {
+    // Do things...
+    const results = await get('/console/api/v1/version');
+    if (response.ok) {
+      setServerVersion(results);
+    }
+  };
+
+  React.useEffect(() => {
+    if (serverVersion === null) {
+      getServerVersion();
+    }
+  }, []);
+
+  React.useEffect(() => {
+    sessionStorage.setItem(`server-version`, JSON.stringify(serverVersion));
+  }, [serverVersion]);
+
   return (
     <AppBar position="static">
+      <Banner type="environment-banner" />
+      <Banner type="version-banner" />
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -105,7 +136,12 @@ const ResponsiveAppBar = () => {
               navigate('/');
             }}
           >
-            Console
+            Hλ
+            {serverVersion && (
+              <>
+                {' · '} {serverVersion}
+              </>
+            )}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -156,7 +192,12 @@ const ResponsiveAppBar = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            Console
+            Hλ
+            {serverVersion && (
+              <>
+                {' · '} {serverVersion}
+              </>
+            )}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -178,9 +219,36 @@ const ResponsiveAppBar = () => {
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={() => {
+              navigate('/documentation');
+            }}
+            color="inherit"
+            style={{ marginRight: '5px' }}
+          >
+            <DocumentationIcon />
+          </IconButton>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={() => {
+              navigate('/news');
+            }}
+            color="inherit"
+            style={{ marginRight: '5px' }}
+          >
+            <NewsIcon />
+          </IconButton>
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={() => {
               navigate('/settings');
             }}
             color="inherit"
+            style={{ marginRight: '20px' }}
           >
             <SettingsIcon />
           </IconButton>

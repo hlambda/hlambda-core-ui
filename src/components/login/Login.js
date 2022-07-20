@@ -126,6 +126,9 @@ export default function Login() {
               <Link
                 href={process.env.REACT_APP_CONSOLE_DOCS_URL}
                 variant="body2"
+                target="_blank"
+                // rel="noopener" // Security (Choose 1)
+                rel="noreferrer" // Security (Choose 1)
               >
                 How to set admin secret?
               </Link>
@@ -134,6 +137,9 @@ export default function Login() {
               <Link
                 href={process.env.REACT_APP_CONSOLE_HELP_URL}
                 variant="body2"
+                target="_blank"
+                // rel="noopener" // Security (Choose 1)
+                rel="noreferrer" // Security (Choose 1)
               >
                 {'What is this? Help'}
               </Link>
