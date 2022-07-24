@@ -104,7 +104,9 @@ function Home() {
 
   const generateCloneCommand = (showSecret) => {
     const url = `${window.location.protocol}//${window.location.hostname}${
-      window.location.port === '80' ? '' : `:${window.location.port}`
+      window.location.port !== ''
+        ? `:${window.location.port}`
+        : window.location.port
     }`;
     return showSecret
       ? `hl clone ${`hlapp${timestampOnRender}`} --admin-secret="${auth.getToken()}" ${url}`
