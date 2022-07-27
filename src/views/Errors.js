@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@mui/material/Container';
-import { styled } from '@mui/material/styles';
+import Grid from '@mui/material/Grid';
 
 import TopBar from './../components/top-bar';
 
@@ -15,18 +15,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 import Editor from '@monaco-editor/react';
 
-const StyledPreCodeTag = styled('pre')(
-  ({ theme }) => `
-  background-color: #000;
-  color: #FFF;
-  overflow-y: auto;
-  padding: 0;
-  height: 85vh;
-  display: block;
-  margin: 0;
-  font-size: 15px;
-`
-);
+import CopyToClipboard from './../components/copy-to-clipboard/CopyToClipboard';
 
 function Errors() {
   const { get, post, response, loading, error } = useFetch();
@@ -63,10 +52,39 @@ function Errors() {
     <>
       <TopBar />
       <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
-        <div style={{ paddingTop: '20px' }}>
-          This is the list of all possible errors defined by the `errors.*.js`
-          files:
-        </div>
+        <Grid
+          container
+          direction="row"
+          // justifyContent="flex-start"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <Grid item>
+            <span style={{ paddingTop: '20px' }}>
+              This is the list of all possible errors defined by the
+              `errors.*.js` files:
+            </span>
+          </Grid>
+          <Grid item>
+            <Grid
+              container
+              direction="row"
+              // justifyContent="flex-start"
+              justifyContent="space-between"
+              alignItems="center"
+              spacing={2}
+            >
+              <Grid item>
+                <CopyToClipboard
+                  useGrids={true}
+                  aria-label="copy content"
+                  textToCopy={errors}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
         <div
           style={{
             width: '100%',
@@ -78,7 +96,7 @@ function Errors() {
             language={'json'}
             defaultValue={errors}
             value={errors}
-            theme="vs-dark"
+            theme="hc-black"
             readOnly={true}
             onMount={(editor) => {
               editor.updateOptions({ readOnly: true });

@@ -1,5 +1,7 @@
 import React from 'react';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -9,8 +11,14 @@ import TopBar from './../components/top-bar';
 
 import useFetch from 'use-http';
 
+import getSessionStorageOrDefault from './../utils/getSessionStorageOrDefault';
+
 function Settings() {
   const { get, post, response, loading, error } = useFetch();
+
+  const [serverVersion, setServerVersion] = React.useState(
+    getSessionStorageOrDefault(`server-version`, null)
+  );
 
   return (
     <>
@@ -35,6 +43,29 @@ function Settings() {
             </ListItem>
           ))}
         </List>
+        <Divider sx={{ marginTop: '2rem' }} />
+        <Grid container>
+          <Grid item xs sx={{ padding: '1rem' }}>
+            <Typography
+              align="center"
+              component="h4"
+              variant="inherit"
+              color="text.disabled"
+              sx={{ fontWeight: '200' }}
+            >
+              Hλ Server version: {serverVersion}
+            </Typography>
+            <Typography
+              align="center"
+              component="h4"
+              variant="inherit"
+              color="text.disabled"
+              sx={{ fontWeight: '200' }}
+            >
+              Hλ UI version: {process.env.REACT_APP_VERSION}
+            </Typography>
+          </Grid>
+        </Grid>
       </Container>
     </>
   );

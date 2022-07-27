@@ -79,6 +79,20 @@ function ConsoleEditor({ language, defaultFile }) {
     }
   };
 
+  const _handleUpload = async (value, event) => {
+    const fileInput = document.querySelector('#your-file-input');
+    const formData = new FormData();
+    formData.append('path', values.path);
+    formData.append('uploadFile', fileInput.files[0]);
+    // Do things...
+    const results = await post('/console/api/v1/files/upload', formData);
+    if (response.ok) {
+      toast.success('File uploaded.');
+    } else {
+      toast.error('Error while uploading file!');
+    }
+  };
+
   // React.useEffect(() => {
   //   _handleReload();
   // }, []);
@@ -176,6 +190,13 @@ function ConsoleEditor({ language, defaultFile }) {
             Reload File
           </Button>
         </Grid>
+        <Grid>
+          <Button variant="contained" onClick={_handleUpload}>
+            Upload File
+          </Button>
+          <input id="your-file-input" type="file" name="uploadFile"></input>
+        </Grid>
+
         {/* <Grid>
           <Button variant="contained" onClick={_handleReadDear}>
             Read Dir

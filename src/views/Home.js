@@ -109,8 +109,8 @@ function Home() {
         : window.location.port
     }`;
     return showSecret
-      ? `hl clone ${`hlapp${timestampOnRender}`} --admin-secret="${auth.getToken()}" ${url}`
-      : `hl clone ${`hlapp${timestampOnRender}`} --admin-secret="*********" ${url}`;
+      ? `hl clone ${`hlapp${timestampOnRender}`} --admin-secret "${auth.getToken()}" ${url}`
+      : `hl clone ${`hlapp${timestampOnRender}`} --admin-secret "*********" ${url}`;
   };
 
   return (
@@ -183,7 +183,11 @@ function Home() {
         />
 
         <iframe
-          src={`${process.env.REACT_APP_API_PREFIX}/console/docs`}
+          src={`${
+            `${window.location.host}`.match(/^localhost|^127\.0\.0\.1/)
+              ? process.env.REACT_APP_API_PREFIX_LOCAL_DEVELOPMENT
+              : process.env.REACT_APP_API_PREFIX
+          }/console/docs/#/?secret=${encodeURIComponent(auth.getToken())}`}
           id="myPortalToSwagger"
           className="myClassname"
           display="initial"

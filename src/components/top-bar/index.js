@@ -43,8 +43,12 @@ const pages = [
     url: '/shell',
   },
   {
+    name: 'Config',
+    url: '/configurations',
+  },
+  {
     name: 'Env',
-    url: '/env',
+    url: '/environments',
   },
   {
     name: 'Constants',

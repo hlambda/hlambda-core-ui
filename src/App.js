@@ -12,6 +12,7 @@ import NotFound from './components/not-found/NotFound';
 import HomePage from './views/Home';
 import CommandsPage from './views/Commands';
 import ConfigurationPage from './views/Configuration';
+import EnvironmentsPage from './views/Environments';
 import RoutesPage from './views/Routes';
 import LogsPage from './views/Logs';
 import ConstantsPage from './views/Constants';
@@ -144,11 +145,21 @@ function App() {
             }
           />
           <Route
-            path="/env"
+            path="/configurations"
             element={
               <RequireAuth>
                 <Page title="Console | Hlambda">
                   <ConfigurationPage />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/environments"
+            element={
+              <RequireAuth>
+                <Page title="Console | Hlambda">
+                  <EnvironmentsPage />
                 </Page>
               </RequireAuth>
             }

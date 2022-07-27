@@ -1,17 +1,15 @@
 import React from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import Grid from '@mui/material/Grid';
 
 import Editor from '@monaco-editor/react';
 
 import TopBar from './../components/top-bar';
 
 import useFetch from 'use-http';
+
+import CopyToClipboard from './../components/copy-to-clipboard/CopyToClipboard';
 
 function DocumentationPage() {
   const { get, post, response, loading, error } = useFetch();
@@ -128,33 +126,52 @@ HLAMBDA_LIST_OF_PROTECTED_ENV_VARIABLES="ENV_HLAMBDA_LIST_OF_PROTECTED_ENV_VARIA
     <>
       <TopBar />
       <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
-        <Box
-          sx={{
-            marginTop: 2,
-            marginBottom: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
+        <Grid
+          container
+          direction="row"
+          // justifyContent="flex-start"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
         >
-          <Typography component="h3" variant="h6">
+          <Grid item>
+            {/* <Typography component="h3" variant="h6"> */}
             {`It wouldn't be meta if we didn't also have documentation? :)`}
-          </Typography>
+            {/* </Typography> */}
+          </Grid>
+          <Grid item>
+            <Grid
+              container
+              direction="row"
+              // justifyContent="flex-start"
+              justifyContent="space-between"
+              alignItems="center"
+              spacing={2}
+            >
+              <Grid item>
+                <CopyToClipboard
+                  useGrids={true}
+                  aria-label="copy content"
+                  textToCopy={content}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
 
-          <div style={{ width: '100%', paddingTop: '20px' }}>
-            <Editor
-              height="calc(100vh - 12rem)"
-              language={'markdown'}
-              defaultValue={content}
-              value={content}
-              theme="vs-dark"
-              readOnly={true}
-              onMount={(editor) => {
-                editor.updateOptions({ readOnly: true });
-              }}
-            />
-          </div>
-        </Box>
+        <div style={{ width: '100%', paddingTop: '20px' }}>
+          <Editor
+            height="calc(100vh - 12rem)"
+            language={'markdown'}
+            defaultValue={content}
+            value={content}
+            theme="hc-black"
+            readOnly={true}
+            onMount={(editor) => {
+              editor.updateOptions({ readOnly: true });
+            }}
+          />
+        </div>
       </Container>
     </>
   );

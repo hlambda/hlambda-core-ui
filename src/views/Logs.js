@@ -1,5 +1,6 @@
 import React from 'react';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 
 import TopBar from './../components/top-bar';
@@ -15,13 +16,15 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
+import CopyToClipboard from './../components/copy-to-clipboard/CopyToClipboard';
+
 const StyledPreCodeTag = styled('pre')(
   ({ theme }) => `
   background-color: #000;
   color: #FFF;
   overflow-y: auto;
   padding: 0;
-  height: 85vh;
+  height: 78vh;
   display: block;
   margin: 0;
   font-size: 15px;
@@ -31,6 +34,7 @@ const StyledPreCodeTag = styled('pre')(
 function Logs() {
   const { get, post, response, loading, error } = useFetch();
   const [logs, setLogs] = React.useState('');
+  const [rawLogs, setRawLogs] = React.useState('');
   const [autoScroll, setAutoScroll] = React.useState(true);
 
   const codeRef = React.useRef(null);
@@ -48,6 +52,7 @@ function Logs() {
       const ansi_up = new AnsiUp();
       const html = ansi_up.ansi_to_html(results);
       setLogs(html);
+      setRawLogs(results);
     }
   };
 
@@ -60,6 +65,7 @@ function Logs() {
     if (error) {
       toast.error('Request errored out...');
       setLogs(JSON.stringify(response.data));
+      setRawLogs(JSON.stringify(response.data));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
@@ -76,6 +82,36 @@ function Logs() {
     <>
       <TopBar />
       <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
+        <Grid
+          container
+          direction="row"
+          // justifyContent="flex-start"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+        >
+          <Grid item>
+            <span style={{ paddingTop: '20px' }}>Server logs:</span>
+          </Grid>
+          <Grid item>
+            <Grid
+              container
+              direction="row"
+              // justifyContent="flex-start"
+              justifyContent="space-between"
+              alignItems="center"
+              spacing={2}
+            >
+              <Grid item>
+                <CopyToClipboard
+                  useGrids={true}
+                  aria-label="copy content"
+                  textToCopy={rawLogs}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
         <div style={{ paddingTop: '20px' }}>
           <StyledPreCodeTag
             ref={codeRef}

@@ -1,6 +1,7 @@
 import React from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 
 import TopBar from './../components/top-bar';
 
@@ -15,28 +16,60 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 import Editor from '@monaco-editor/react';
 
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 import CopyToClipboard from './../components/copy-to-clipboard/CopyToClipboard';
 
-function Constants() {
+const clean = (objectIn) => {
+  let object;
+  try {
+    object = JSON.parse(objectIn);
+  } catch (error) {
+    console.log('[cleaner function] Unable to parse JSON');
+  }
+  if (typeof object === 'undefined') {
+    return objectIn;
+  }
+
+  const cleanKey = (keyName) => {
+    if (typeof object[keyName] !== 'undefined') {
+      object[keyName] = '******';
+    }
+  };
+
+  cleanKey('HASURA_GRAPHQL_ADMIN_SECRET');
+  cleanKey('PRIVATE_KEY');
+  cleanKey('KEY');
+  cleanKey('PASSWORD');
+  cleanKey('SECRET');
+
+  return JSON.stringify(object, null, 2);
+};
+
+function Errors() {
   const { get, post, response, loading, error } = useFetch();
-  const [constants, setConstants] = React.useState('');
+  const [environments, setEnvironments] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
 
-  const constantsBoxRef = React.useRef(null);
+  const errorBoxRef = React.useRef(null);
 
-  const getConstantsDefinitions = async () => {
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
+  const getErrorsDefinitions = async () => {
     // Do things...
-    const results = await get('/console/api/v1/constants');
+    const results = await get('/console/api/v1/environments');
     if (response.ok) {
-      setConstants(JSON.stringify(results, null, 2));
+      setEnvironments(JSON.stringify(results, null, 2));
     }
     // else {
     //   toast.error('Request errored out...');
-    //   setConstants(JSON.stringify(results));
+    //   setErrors(JSON.stringify(results));
     // }
   };
 
   React.useEffect(() => {
-    getConstantsDefinitions();
+    getErrorsDefinitions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -62,8 +95,7 @@ function Constants() {
         >
           <Grid item>
             <span style={{ paddingTop: '20px' }}>
-              This is the list of all possible constants defined by the
-              `constants.*.js` files:
+              This is the list environment variables in `process.env`:
             </span>
           </Grid>
           <Grid item>
@@ -79,8 +111,18 @@ function Constants() {
                 <CopyToClipboard
                   useGrids={true}
                   aria-label="copy content"
-                  textToCopy={constants}
+                  textToCopy={environments}
                 />
+              </Grid>
+              <Grid item>
+                <IconButton
+                  aria-label="toggle secrets visibility"
+                  //onClick={handleClickShowPassword}
+                  //onMouseUp={handleMouseDownPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
               </Grid>
             </Grid>
           </Grid>
@@ -94,8 +136,8 @@ function Constants() {
           <Editor
             height="calc(100vh - 12rem)"
             language={'json'}
-            defaultValue={constants}
-            value={constants}
+            defaultValue={showPassword ? environments : clean(environments)}
+            value={showPassword ? environments : clean(environments)}
             theme="hc-black"
             readOnly={true}
             onMount={(editor) => {
@@ -105,9 +147,9 @@ function Constants() {
         </div>
         {/* <div style={{ paddingTop: '20px' }}>
           <StyledPreCodeTag
-            ref={constantsBoxRef}
+            ref={errorBoxRef}
             dangerouslySetInnerHTML={{
-              __html: loading ? 'Loading...' : constants,
+              __html: loading ? 'Loading...' : errors,
             }}
           />
         </div> */}
@@ -116,4 +158,4 @@ function Constants() {
   );
 }
 
-export default Constants;
+export default Errors;

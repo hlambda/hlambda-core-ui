@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
 import IconButton from '@mui/material/IconButton';
 
@@ -36,10 +37,40 @@ const CopyToClipboard = (props) => {
         console.log(err);
       });
   };
+  if (props.useGrids) {
+    return (
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid height={32} item>
+          {isCopied && (
+            <Alert
+              sx={{ paddingTop: 0, paddingBottom: 0 }}
+              icon={<CheckIcon />}
+              severity="success"
+            >
+              {isCopied ? 'Copied!' : ''}
+            </Alert>
+          )}
+        </Grid>
+        <Grid item>
+          <IconButton
+            aria-label={props['aria-label']}
+            onMouseDown={handleCopyClickFunc(props.textToCopy)}
+          >
+            {<CopyAll />}
+          </IconButton>
+        </Grid>
+      </Grid>
+    );
+  }
   return (
     <>
       {isCopied && (
-        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+        <Alert icon={<CheckIcon />} severity="success">
           {isCopied ? 'Copied!' : ''}
         </Alert>
       )}
