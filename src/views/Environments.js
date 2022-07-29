@@ -38,11 +38,20 @@ const clean = (objectIn) => {
     }
   };
 
-  cleanKey('HASURA_GRAPHQL_ADMIN_SECRET');
-  cleanKey('PRIVATE_KEY');
-  cleanKey('KEY');
-  cleanKey('PASSWORD');
-  cleanKey('SECRET');
+  // cleanKey('HASURA_GRAPHQL_ADMIN_SECRET');
+  // cleanKey('PRIVATE_KEY');
+  // cleanKey('KEY');
+  // cleanKey('PASSWORD');
+  // cleanKey('SECRET');
+  // cleanKey('HLAMBDA_ADMIN_SECRET');
+
+  const keys = Object.keys(object);
+
+  for (const key of keys) {
+    if (key.toLowerCase().match(/password|secret|key/)) {
+      cleanKey(key);
+    }
+  }
 
   return JSON.stringify(object, null, 2);
 };
