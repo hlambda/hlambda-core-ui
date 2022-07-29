@@ -11,13 +11,15 @@ import TopBar from './../components/top-bar';
 
 import useFetch from 'use-http';
 
-import getSessionStorageOrDefault from './../utils/getSessionStorageOrDefault';
+import useLocalStorage from './../hooks/useLocalStorage';
+import useSessionStorage from './../hooks/useSessionStorage';
 
 function Settings() {
   const { get, post, response, loading, error } = useFetch();
 
-  const [serverVersion, setServerVersion] = React.useState(
-    getSessionStorageOrDefault(`server-version`, null)
+  const [serverVersion, setServerVersion] = useSessionStorage(
+    `server-version`,
+    null
   );
 
   return (
@@ -26,11 +28,11 @@ function Settings() {
       <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
         Settings...
         <Typography component="h3" variant="h6">
-          Hyper Lambda or Hlambda for short, is meta API meaning there is no
+          Hyper Lambda or Hlambda for short, is meta API meaning there are no
           settings as such, any settings are passed via environment variables.
-          Here you can find the definitions and steps how to change it. Either
-          by deploying the Meta API and setting env or upadting
-          hlambda-config.yaml in one of your hlambda apps.
+          Here you can find the definitions and steps on how to change it.
+          Either by deploying the Meta API and setting env or updating
+          `hlambda-config.yaml` in one of your hlambda apps.
         </Typography>
         <Typography component="h3" variant="h6">
           One of the examples could be the setup for serving static files. You

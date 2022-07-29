@@ -9,14 +9,51 @@ import TopBar from './../components/top-bar';
 import useFetch from 'use-http';
 import { toast } from 'react-toastify';
 
+import useLocalStorage from './../hooks/useLocalStorage';
+import useSessionStorage from './../hooks/useSessionStorage';
+
 function Metadata() {
   const { get, post, response, loading, error } = useFetch();
+
+  const [metadataResult, setMetadataResult] = useLocalStorage(
+    `metadata-result`,
+    {}
+  );
+  const [metadataHistoryResult, setMetadataHistoryResult] = useLocalStorage(
+    `metadata-history`,
+    {}
+  );
+
+  const checkMetadata = async () => {
+    const results = await get('/console/api/v1/metadata/version');
+    if (response.ok) {
+      setMetadataResult(results);
+    }
+  };
+
+  const checkMetadataHistory = async () => {
+    const results = await get('/console/api/v1/metadata/history');
+    if (response.ok) {
+      setMetadataHistoryResult(results);
+    }
+  };
+
+  React.useEffect(() => {
+    checkMetadata();
+    checkMetadataHistory();
+  }, []);
 
   return (
     <>
       <TopBar />
       <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={12}>
+            Metadata history: {JSON.stringify(metadataHistoryResult, null, 2)}
+          </Grid>
+          <Grid item xs={12}>
+            Metadata hash: {JSON.stringify(metadataResult)}
+          </Grid>
           <Grid item xs={12}>
             Here you can import / export metadata...
           </Grid>

@@ -23,7 +23,8 @@ import { toast } from 'react-toastify';
 
 import Banner from './../banner/Banner';
 
-import getSessionStorageOrDefault from './../../utils/getSessionStorageOrDefault';
+import useLocalStorage from './../../hooks/useLocalStorage';
+import useSessionStorage from './../../hooks/useSessionStorage';
 
 const pages = [
   {
@@ -88,8 +89,10 @@ const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   // const [serverVersion, setServerVersion] = React.useState(null);
-  const [serverVersion, setServerVersion] = React.useState(
-    getSessionStorageOrDefault(`server-version`, null)
+
+  const [serverVersion, setServerVersion] = useSessionStorage(
+    `server-version`,
+    null
   );
 
   const handleOpenNavMenu = (event) => {
@@ -120,10 +123,6 @@ const ResponsiveAppBar = () => {
       getServerVersion();
     }
   }, []);
-
-  React.useEffect(() => {
-    sessionStorage.setItem(`server-version`, JSON.stringify(serverVersion));
-  }, [serverVersion]);
 
   return (
     <AppBar position="static">

@@ -13,44 +13,41 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 import useLocalStorage from './../../hooks/useLocalStorage';
-import getSessionStorageOrDefault from './../../utils/getSessionStorageOrDefault';
+import useSessionStorage from './../../hooks/useSessionStorage';
 
 function Banner(props) {
   const navigate = useNavigate();
+  const { get, post, response, loading, error } = useFetch();
 
-  const [checkVersionResult, setCheckVersionResult] = React.useState({});
-  const [checkBannerResult, setCheckBannerResult] = React.useState({});
-  const [hidden, setHidden] = React.useState(
-    getSessionStorageOrDefault(`${props.type}-banner-hidden`, false)
+  const [checkBannerResult, setCheckBannerResult] = useLocalStorage(
+    'env-banner-result',
+    {}
   );
+  const [checkVersionResult, setCheckVersionResult] = useLocalStorage(
+    'new-version-result',
+    {}
+  );
+  const [hidden, setHidden] = useSessionStorage(
+    `${props.type}-banner-hidden`,
+    false
+  );
+
+  // This has to be a little more persistant, so that we do not fetch again if not needed.
   const [newVersionLastCheckTimestamp, setNewVersionLastCheckTimestamp] =
     useLocalStorage('new-version-last-check-timestamp', null);
 
-  const { get, post, response, loading, error } = useFetch();
-
-  React.useEffect(() => {
-    sessionStorage.setItem(
-      `${props.type}-banner-hidden`,
-      JSON.stringify(hidden)
-    );
-  }, [hidden]);
-
+  // This function checks COLOR BANNER
   const checkBanner = async () => {
-    // Do things...
     const results = await get('/console/api/v1/banner-info');
     if (response.ok) {
-      // toast.success('yeey');
-      // console.log('checkBanner', results);
       setCheckBannerResult(results);
     }
   };
 
+  // This function calls GitHub API to check latest release version.
   const checkVersion = async () => {
-    // Do things...
     const results = await get('/console/api/v1/check-version');
     if (response.ok) {
-      // toast.success('yeey');
-      // console.log('checkVersion', results);
       setNewVersionLastCheckTimestamp(Date.now());
       setCheckVersionResult(results);
     }

@@ -12,13 +12,15 @@ import TopBar from './../components/top-bar';
 
 import useFetch from 'use-http';
 
-import getSessionStorageOrDefault from './../utils/getSessionStorageOrDefault';
+import useLocalStorage from './../hooks/useLocalStorage';
+import useSessionStorage from './../hooks/useSessionStorage';
 
 function NewsPage() {
   const { get, post, response, loading, error } = useFetch();
 
-  const [serverVersion, setServerVersion] = React.useState(
-    getSessionStorageOrDefault(`server-version`, null)
+  const [serverVersion, setServerVersion] = useSessionStorage(
+    `server-version`,
+    null
   );
 
   return (

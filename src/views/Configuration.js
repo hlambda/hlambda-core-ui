@@ -15,7 +15,7 @@ function Home() {
       <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
         <ConsoleEditor
           language="yaml"
-          defaultFile="metadata/apps/example_demo_app/hlambda-config.yaml"
+          defaultFile="metadata/apps/example-demo-app/hlambda-config.yaml"
         />
       </Container>
     </>

@@ -1,6 +1,6 @@
 {
   "name": "frontend-console",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.1",
@@ -31,7 +31,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "export REACT_APP_GIT_HEAD_HASH=hotbuild-$(git rev-parse --short=8 HEAD) && react-scripts start",
+    "start": "export REACT_APP_DEVELOPMENT_MODE=true && export REACT_APP_GIT_HEAD_HASH=hotbuild-$(git rev-parse --short=8 HEAD) && react-scripts start",
     "build": "export REACT_APP_GIT_HEAD_HASH=$(git rev-parse --short=8 HEAD) && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

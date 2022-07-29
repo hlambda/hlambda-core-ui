@@ -184,8 +184,10 @@ function Home() {
 
         <iframe
           src={`${
-            `${window.location.host}`.match(/^localhost|^127\.0\.0\.1/)
-              ? process.env.REACT_APP_API_PREFIX_LOCAL_DEVELOPMENT
+            process.env.REACT_APP_DEVELOPMENT_MODE === 'true'
+              ? `${window.location.host}`.match(/^localhost|^127\.0\.0\.1/)
+                ? process.env.REACT_APP_API_PREFIX_LOCAL_DEVELOPMENT
+                : process.env.REACT_APP_API_PREFIX
               : process.env.REACT_APP_API_PREFIX
           }/console/docs/#/?secret=${encodeURIComponent(auth.getToken())}`}
           id="myPortalToSwagger"
