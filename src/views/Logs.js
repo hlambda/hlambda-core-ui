@@ -24,7 +24,7 @@ const StyledPreCodeTag = styled('pre')(
   color: #FFF;
   overflow-y: auto;
   padding: 0;
-  height: 78vh;
+  height: calc(100vh - 12rem);
   display: block;
   margin: 0;
   font-size: 15px;
@@ -36,6 +36,7 @@ function Logs() {
   const [logs, setLogs] = React.useState('');
   const [rawLogs, setRawLogs] = React.useState('');
   const [autoScroll, setAutoScroll] = React.useState(true);
+  const [autoRefresh, setAutoRefresh] = React.useState(true);
 
   const codeRef = React.useRef(null);
 
@@ -66,6 +67,8 @@ function Logs() {
       toast.error('Request errored out...');
       setLogs(JSON.stringify(response.data));
       setRawLogs(JSON.stringify(response.data));
+      // Turn off auto refresh
+      setAutoRefresh(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
@@ -77,6 +80,24 @@ function Logs() {
   const _handleSwitchChange = (event) => {
     setAutoScroll(!autoScroll);
   };
+
+  const _handleSwitchAutoRefreshChange = (event) => {
+    setAutoRefresh(!autoRefresh);
+  };
+
+  React.useEffect(() => {
+    getLogs();
+  }, []);
+
+  React.useEffect(() => {
+    if (autoRefresh) {
+      const interval = setInterval(() => {
+        console.log('This will run 3 seconds!');
+        getLogs();
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [autoRefresh]);
 
   return (
     <>
@@ -115,21 +136,41 @@ function Logs() {
         <div style={{ paddingTop: '20px' }}>
           <StyledPreCodeTag
             ref={codeRef}
-            dangerouslySetInnerHTML={{ __html: loading ? 'Loading...' : logs }}
+            dangerouslySetInnerHTML={{
+              __html: loading && logs === '' ? 'Loading...' : logs,
+            }}
           />
         </div>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch
-                color="warning"
-                checked={autoScroll}
-                onChange={_handleSwitchChange}
+        <Grid container>
+          <Grid item>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="warning"
+                    checked={autoRefresh}
+                    onChange={_handleSwitchAutoRefreshChange}
+                  />
+                }
+                label="Auto refresh"
               />
-            }
-            label="Auto scroll to bottom."
-          />
-        </FormGroup>
+            </FormGroup>
+          </Grid>
+          <Grid item>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    color="warning"
+                    checked={autoScroll}
+                    onChange={_handleSwitchChange}
+                  />
+                }
+                label="Auto scroll to bottom."
+              />
+            </FormGroup>
+          </Grid>
+        </Grid>
       </Container>
       <Fab
         style={{
