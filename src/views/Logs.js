@@ -37,12 +37,13 @@ function Logs() {
   const [rawLogs, setRawLogs] = React.useState('');
   const [autoScroll, setAutoScroll] = React.useState(true);
   const [autoRefresh, setAutoRefresh] = React.useState(true);
+  const [snapToBottom, setSnapToBottom] = React.useState(true);
 
-  const codeRef = React.useRef(null);
+  const logsBoxRef = React.useRef(null);
 
   const executeScroll = () => {
-    if (codeRef?.current) {
-      codeRef.current.scrollTop = codeRef?.current?.scrollHeight;
+    if (logsBoxRef?.current) {
+      logsBoxRef.current.scrollTop = logsBoxRef?.current?.scrollHeight;
     }
   };
 
@@ -62,6 +63,29 @@ function Logs() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleScroll = (event) => {
+    // console.log(event);
+    const sh =
+      logsBoxRef?.current?.scrollHeight -
+        Math.round(logsBoxRef?.current?.scrollTop) ===
+      logsBoxRef?.current?.clientHeight;
+    // Set to true if user is at the bottom of the logs
+    setSnapToBottom(sh);
+    // if (sh) {
+    //   logsBoxRef.current.style.backgroundColor = 'red';
+    // } else {
+    //   logsBoxRef.current.style.backgroundColor = 'green';
+    // }
+    //console.log(sh);
+  };
+
+  // Add event listeners to scroll to trigger snap
+  React.useEffect(() => {
+    const refElement = logsBoxRef?.current;
+    refElement?.addEventListener('scroll', handleScroll);
+    return () => refElement?.removeEventListener('scroll', handleScroll);
+  }, []);
+
   React.useEffect(() => {
     if (error) {
       toast.error('Request errored out...');
@@ -74,7 +98,7 @@ function Logs() {
   }, [error]);
 
   React.useEffect(() => {
-    autoScroll && executeScroll();
+    autoScroll && snapToBottom && executeScroll();
   });
 
   const _handleSwitchChange = (event) => {
@@ -135,7 +159,7 @@ function Logs() {
         </Grid>
         <div style={{ paddingTop: '20px' }}>
           <StyledPreCodeTag
-            ref={codeRef}
+            ref={logsBoxRef}
             dangerouslySetInnerHTML={{
               __html: loading && logs === '' ? 'Loading...' : logs,
             }}
@@ -167,6 +191,14 @@ function Logs() {
                   />
                 }
                 label="Auto scroll to bottom."
+              />
+            </FormGroup>
+          </Grid>
+          <Grid item>
+            <FormGroup>
+              <FormControlLabel
+                control={<Switch color="warning" checked={snapToBottom} />}
+                label="Auto snap"
               />
             </FormGroup>
           </Grid>

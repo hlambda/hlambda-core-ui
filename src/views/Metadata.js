@@ -3,6 +3,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
+import { DateTime } from 'luxon';
 
 import TopBar from './../components/top-bar';
 import ConfirmationDialog from './../components/confirm-dialog';
@@ -100,13 +101,49 @@ function Metadata() {
     }
   };
 
+  const formatDate = (timeISO) => {
+    return DateTime.fromISO(timeISO).isValid
+      ? DateTime.fromISO(timeISO).toLocaleString(
+          DateTime.DATETIME_FULL_WITH_SECONDS
+        )
+      : '-';
+  };
+
   return (
     <>
       <TopBar />
       <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={12}>
-            Metadata history: {JSON.stringify(metadataHistoryResult, null, 2)}
+            {/* Metadata history: {JSON.stringify(metadataHistoryResult, null, 2)} */}
+            <Grid
+              container
+              rowSpacing={1}
+              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            >
+              <Grid item xs={12}>
+                History
+              </Grid>
+              <Grid item xs={12}>
+                Last Restarted:{' '}
+                {formatDate(metadataHistoryResult?.lastRestarted)}
+              </Grid>
+              <Grid item xs={12}>
+                Last Metadata Export:{' '}
+                {formatDate(metadataHistoryResult?.lastMetadataExport)}
+              </Grid>
+              <Grid item xs={12}>
+                Last Metadata Import:{' '}
+                {formatDate(metadataHistoryResult?.lastMetadataImport)}
+              </Grid>
+              <Grid item xs={12}>
+                Last Metadata Clear:{' '}
+                {formatDate(metadataHistoryResult?.lastMetadataClear)}
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider />
           </Grid>
           <Grid item xs={12}>
             Metadata hash: {JSON.stringify(metadataResult)}
@@ -128,7 +165,6 @@ function Metadata() {
               }}
             />
           </Grid>
-          <Divider />
           <Grid item xs={12}>
             <input id="your-file-input" type="file" name="metadata"></input>
           </Grid>

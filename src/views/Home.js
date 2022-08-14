@@ -52,6 +52,7 @@ const StyledPreCodeTag = styled('pre')(
 function Home() {
   const { get, post, response, loading, error } = useFetch();
   const [logs, setLogs] = React.useState('');
+  const [swaggerUIToken, setSwaggerUIToken] = React.useState();
   const [autoScroll, setAutoScroll] = React.useState(true);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showSecretInCommand, setShowSecretInCommand] = React.useState(false);
@@ -70,6 +71,15 @@ function Home() {
     }
   };
 
+  const getTokenForConsoleSwaggerUI = async () => {
+    // Do things...
+    const results = await get('/console/api/v1/console-swagger-ui-sign-access');
+    if (response.ok) {
+      // toast.success('yeey');
+      setSwaggerUIToken(results);
+    }
+  };
+
   const getLogs = async () => {
     // Do things...
     const results = await get('/console/api/v1/logs?type=text');
@@ -82,6 +92,7 @@ function Home() {
   };
 
   React.useEffect(() => {
+    getTokenForConsoleSwaggerUI();
     getLogs();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -182,26 +193,28 @@ function Home() {
           }}
         />
 
-        <iframe
-          src={`${
-            process.env.REACT_APP_DEVELOPMENT_MODE === 'true'
-              ? `${window.location.host}`.match(/^localhost|^127\.0\.0\.1/)
-                ? process.env.REACT_APP_API_PREFIX_LOCAL_DEVELOPMENT
+        {swaggerUIToken && (
+          <iframe
+            src={`${
+              process.env.REACT_APP_DEVELOPMENT_MODE === 'true'
+                ? `${window.location.host}`.match(/^localhost|^127\.0\.0\.1/)
+                  ? process.env.REACT_APP_API_PREFIX_LOCAL_DEVELOPMENT
+                  : process.env.REACT_APP_API_PREFIX
                 : process.env.REACT_APP_API_PREFIX
-              : process.env.REACT_APP_API_PREFIX
-          }/console/docs/#/?secret=${encodeURIComponent(auth.getToken())}`}
-          id="myPortalToSwagger"
-          className="myClassname"
-          display="initial"
-          position="relative"
-          style={{
-            border: 'none',
-            width: 'inherit',
-            height: '700px',
-            paddingTop: '2rem',
-            paddingBottom: '2rem',
-          }}
-        />
+            }/console/docs/#/?secret=${encodeURIComponent(auth.getToken())}`}
+            id="myPortalToSwagger"
+            className="myClassname"
+            display="initial"
+            position="relative"
+            style={{
+              border: 'none',
+              width: 'inherit',
+              height: '700px',
+              paddingTop: '2rem',
+              paddingBottom: '2rem',
+            }}
+          />
+        )}
 
         <StyledPreCodeTag
           ref={codeRef}
