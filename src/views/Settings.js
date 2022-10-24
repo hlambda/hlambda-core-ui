@@ -13,6 +13,7 @@ import useFetch from 'use-http';
 
 import useLocalStorage from './../hooks/useLocalStorage';
 import useSessionStorage from './../hooks/useSessionStorage';
+import ConfirmationDialog from './../components/confirm-dialog';
 
 function Settings() {
   const { get, post, response, loading, error } = useFetch();
@@ -45,6 +46,39 @@ function Settings() {
             </ListItem>
           ))}
         </List>
+        <Grid item xs={12} pb={'10px'} pt={'10px'}>
+          <ConfirmationDialog
+            title="Cache (LocalStorage and SessionStorage) reset"
+            openButtonText="Clear local cache"
+            // message={`Press "OK" to proceed exporting metadata`}
+            confirmText="reset cache"
+            actionButtonText="Clear local cache"
+            // cancelButtonText="Cancel"
+            actionFunction={() => {
+              localStorage.clear();
+              sessionStorage.clear();
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} pb={'10px'} pt={'10px'}>
+          <ConfirmationDialog
+            title="Hard restart"
+            openButtonText="Hard restart"
+            // message={`Press "OK" to proceed exporting metadata`}
+            confirmText="restart"
+            actionButtonText="Hard restart"
+            // cancelButtonText="Cancel"
+            actionFunction={async () => {
+              // Do things...
+              const results = await get('/console/api/v1/trigger-reload');
+              if (response.ok) {
+                toast.success('Server restarting...');
+              } else {
+                toast.error('Request error!');
+              }
+            }}
+          />
+        </Grid>
         <Divider sx={{ marginTop: '2rem' }} />
         <Grid container>
           <Grid item xs sx={{ padding: '1rem' }}>

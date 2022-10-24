@@ -1,3 +1,10 @@
+# Release 0.1.0
+
+- Added custom build of vscode for code editor instead of monaco editor
+- Added clear cache option in settings
+- Added difference between hard reset and zero downtime reload (Main reload button now triggers reload)
+- Added hard reset button in settings (Forces the backend to exit with code 0)
+
 # Release 0.0.5
 
 - Fixed noopener rel to Login

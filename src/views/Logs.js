@@ -1,6 +1,8 @@
 import React from 'react';
 import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import Skeleton from '@mui/material/Skeleton';
 import { styled } from '@mui/material/styles';
 
 import TopBar from './../components/top-bar';
@@ -33,6 +35,14 @@ const StyledPreCodeTag = styled('pre')(
 
 function Logs() {
   const { get, post, response, loading, error } = useFetch();
+  const {
+    get: get2,
+    post: post2,
+    response: response2,
+    loading: loading2,
+    error: error2,
+  } = useFetch();
+  const [firstTimeLoadingLogs, setFirstTimeLoadingLogs] = React.useState(true);
   const [logs, setLogs] = React.useState('');
   const [rawLogs, setRawLogs] = React.useState('');
   const [autoScroll, setAutoScroll] = React.useState(true);
@@ -47,6 +57,14 @@ function Logs() {
     }
   };
 
+  const getClearLogs = async () => {
+    // Do things...
+    const results = await get2('/console/api/v1/logs/clear');
+    if (response2.ok) {
+      // toast.success('Logs cleared!');
+    }
+  };
+
   const getLogs = async () => {
     // Do things...
     const results = await get('/console/api/v1/logs?type=text');
@@ -55,6 +73,9 @@ function Logs() {
       const html = ansi_up.ansi_to_html(results);
       setLogs(html);
       setRawLogs(results);
+      if (firstTimeLoadingLogs) {
+        setFirstTimeLoadingLogs(false);
+      }
     }
   };
 
@@ -64,19 +85,21 @@ function Logs() {
   }, []);
 
   const handleScroll = (event) => {
-    // console.log(event);
+    const bufferSize = 7; // 7px buffer
     const sh =
       logsBoxRef?.current?.scrollHeight -
-        Math.round(logsBoxRef?.current?.scrollTop) ===
+        Math.round(logsBoxRef?.current?.scrollTop) -
+        bufferSize <=
       logsBoxRef?.current?.clientHeight;
     // Set to true if user is at the bottom of the logs
     setSnapToBottom(sh);
+    // Debugging
     // if (sh) {
     //   logsBoxRef.current.style.backgroundColor = 'red';
     // } else {
     //   logsBoxRef.current.style.backgroundColor = 'green';
     // }
-    //console.log(sh);
+    // console.log(sh);
   };
 
   // Add event listeners to scroll to trigger snap
@@ -96,6 +119,13 @@ function Logs() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
+
+  React.useEffect(() => {
+    if (error2) {
+      toast.error('Request errored out...');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error2]);
 
   React.useEffect(() => {
     autoScroll && snapToBottom && executeScroll();
@@ -161,7 +191,7 @@ function Logs() {
           <StyledPreCodeTag
             ref={logsBoxRef}
             dangerouslySetInnerHTML={{
-              __html: loading && logs === '' ? 'Loading...' : logs,
+              __html: loading && firstTimeLoadingLogs ? 'Loading...' : logs,
             }}
           />
         </div>
@@ -197,10 +227,21 @@ function Logs() {
           <Grid item>
             <FormGroup>
               <FormControlLabel
-                control={<Switch color="warning" checked={snapToBottom} />}
+                control={
+                  <Switch color="warning" disabled checked={snapToBottom} />
+                }
                 label="Auto snap"
               />
             </FormGroup>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={() => {
+                getClearLogs();
+              }}
+            >
+              Clear Logs
+            </Button>
           </Grid>
         </Grid>
       </Container>

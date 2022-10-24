@@ -41,13 +41,11 @@ function NewsPage() {
           </Typography>
           <List>
             {[
-              '+ List env variables from the server instance',
+              '+ List environment variables from the server instance',
               '+ File uploads through console. (Useful when serving static content like images)',
-              '- Add visual studio code for web as the editor for the files.',
-              '- Implement PM2 to handle reloading for zero downtime.',
-              '- Home screen should support console and file viewer at the same time.',
-              '- Force users to handle API errors, and edge cases by providing a solution for managing errors.',
-              '- Tab complete in the shell',
+              '+ Add visual studio code for web as the editor for the files.',
+              '+ Implement PM2 to handle reloading for zero downtime.',
+              '- Tab complete in the shell, or shell via connect option in the VSC for Web Extension',
             ].map((item) => (
               <ListItem key={item}>
                 <ListItemText primary={item} />

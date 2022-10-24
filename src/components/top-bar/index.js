@@ -35,9 +35,13 @@ const pages = [
   //   name: 'Code',
   //   url: '/code',
   // },
+  // {
+  //   name: 'Routes',
+  //   url: '/routes',
+  // },
   {
-    name: 'Routes',
-    url: '/routes',
+    name: 'Code',
+    url: '/code',
   },
   {
     name: 'Shell',
@@ -259,7 +263,7 @@ const ResponsiveAppBar = () => {
             variant="contained"
             onClick={async () => {
               // Do things...
-              const results = await get('/console/api/v1/trigger-restart');
+              const results = await get('/console/api/v1/trigger-reload');
               if (response.ok) {
                 toast.success('Server reloading...');
               } else {

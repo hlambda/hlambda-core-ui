@@ -13,7 +13,10 @@ function Routes() {
     <>
       <TopBar />
       <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
-        <ConsoleEditor language="javascript" />
+        <ConsoleEditor
+          language="javascript"
+          defaultFile="metadata/apps/example-demo-app/router.demo.js"
+        />
       </Container>
     </>
   );

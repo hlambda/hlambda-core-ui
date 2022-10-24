@@ -1,6 +1,6 @@
 {
-  "name": "frontend-console",
-  "version": "0.0.8",
+  "name": "hlambda-core-ui",
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.1",
@@ -33,6 +33,7 @@
   "scripts": {
     "start": "export REACT_APP_DEVELOPMENT_MODE=true && export REACT_APP_GIT_HEAD_HASH=hotbuild-$(git rev-parse --short=8 HEAD) && react-scripts start",
     "build": "export REACT_APP_GIT_HEAD_HASH=$(git rev-parse --short=8 HEAD) && react-scripts build",
+    "build:vsc": "cd hlambda-vscode && yarn build && cd .. && rm -rf ./public/vscode-payload && cp -r ./hlambda-vscode/dist ./public/vscode-payload",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint-fix": "./node_modules/.bin/eslint --fix --ext .js,.jsx --ignore-pattern public .",
@@ -70,5 +71,5 @@
     "react-test-renderer": "^18.2.0"
   },
   "homepage": "/console",
-  "proxy": "http://localhost:1331"
+  "proxy": "http://localhost:8082"
 }

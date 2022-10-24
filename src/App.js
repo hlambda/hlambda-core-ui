@@ -1,8 +1,15 @@
 import React from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Provider } from 'use-http';
 
 import { ToastContainer } from 'react-toastify';
-
 import 'react-toastify/dist/ReactToastify.css';
 
 import Login from './components/login/Login';
@@ -14,6 +21,7 @@ import CommandsPage from './views/Commands';
 import ConfigurationPage from './views/Configuration';
 import EnvironmentsPage from './views/Environments';
 import RoutesPage from './views/Routes';
+import CodePage from './views/Code';
 import LogsPage from './views/Logs';
 import ConstantsPage from './views/Constants';
 import ErrorsPage from './views/Errors';
@@ -22,19 +30,6 @@ import MetadataPage from './views/Metadata';
 import SettingsPage from './views/Settings';
 import DocumentationPage from './views/Docs';
 import NewsPage from './views/News';
-import VsCodeWebPage from './views/VsCodeWebPage';
-
-// import DashboardPage from './components/dashboard/Dashboard';
-
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  useLocation,
-  Navigate,
-} from 'react-router-dom';
-
-import { Provider } from 'use-http';
 
 import { useAuth } from './context/basicAuthContext';
 
@@ -74,7 +69,7 @@ function App() {
       'x-hlambda-admin-secret': auth.getToken(),
     },
     interceptors: {
-      // every time we make an http request, this will run 1st before the request is made
+      // Every time we make an http request, this will run 1st before the request is made
       // url, path and route are supplied to the interceptor
       // request options can be modified and must be returned
       request: async ({ options, url, path, route }) => {
@@ -82,7 +77,7 @@ function App() {
         options.headers['x-hlambda-admin-secret'] = auth.getToken();
         return options;
       },
-      // // every time we make an http request, before getting the response back, this will run
+      // // Every time we make an http request, before getting the response back, this will run
       // response: async ({ response }) => {
       //   const res = response
       //   if (res.data) res.data = toCamel(res.data)
@@ -129,7 +124,10 @@ function App() {
             element={
               <RequireAuth>
                 <Page title="Console | Hlambda">
-                  <VsCodeWebPage />
+                  <CodePage
+                    type="routes"
+                    defaultFile="metadata/apps/example-demo-app/router.demo.js"
+                  />
                 </Page>
               </RequireAuth>
             }
@@ -149,6 +147,20 @@ function App() {
             element={
               <RequireAuth>
                 <Page title="Console | Hlambda">
+                  <CodePage
+                    key="configurations"
+                    type="configurations"
+                    defaultFile="metadata/apps/example-demo-app/hlambda-config.yaml"
+                  />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/configurations-old"
+            element={
+              <RequireAuth>
+                <Page title="Console | Hlambda">
                   <ConfigurationPage />
                 </Page>
               </RequireAuth>
@@ -165,7 +177,7 @@ function App() {
             }
           />
           <Route
-            path="/routes"
+            path="/routes-old"
             element={
               <RequireAuth>
                 <Page title="Console | Hlambda">
@@ -254,19 +266,9 @@ function App() {
               </RequireAuth>
             }
           />
-
-          {/* <Route
-            path="/demo/dashboard"
-            element={
-              <RequireAuth>
-                <DashboardPage />
-              </RequireAuth>
-            }
-          /> */}
-
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <ToastContainer theme="dark" />
+        <ToastContainer position="bottom-right" theme="dark" />
       </BrowserRouter>
     </Provider>
   );

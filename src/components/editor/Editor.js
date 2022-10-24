@@ -23,7 +23,7 @@ function ConsoleEditor({ language, defaultFile }) {
   const { get, post, response, loading, error } = useFetch();
 
   const [values, setValues] = React.useState({
-    path: defaultFile ?? 'metadata/apps/auth/routes/router.auth.js',
+    path: defaultFile ?? 'metadata/package.json',
     editorCodeData: '',
     encodingWrite: 'base64',
     encodingRead: 'utf-8',

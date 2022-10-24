@@ -2,6 +2,7 @@ import React from 'react';
 
 import Grid from '@mui/material/Grid';
 import Alert from '@mui/material/Alert';
+import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 
 import CopyAll from '@mui/icons-material/FileCopy';
@@ -27,7 +28,9 @@ const CopyToClipboard = (props) => {
     copyTextToClipboard(copyText)
       .then(() => {
         // If successful, update the isCopied state value
-        // toast.success('Copied!');
+        if (props.useToast) {
+          toast.success('Copied!');
+        }
         setIsCopied(true);
         setTimeout(() => {
           setIsCopied(false);
@@ -46,7 +49,7 @@ const CopyToClipboard = (props) => {
         alignItems="center"
       >
         <Grid height={32} item>
-          {isCopied && (
+          {isCopied && !props.useToast && (
             <Alert
               sx={{ paddingTop: 0, paddingBottom: 0 }}
               icon={<CheckIcon />}
@@ -57,29 +60,33 @@ const CopyToClipboard = (props) => {
           )}
         </Grid>
         <Grid item>
-          <IconButton
-            aria-label={props['aria-label']}
-            onMouseDown={handleCopyClickFunc(props.textToCopy)}
-          >
-            {<CopyAll />}
-          </IconButton>
+          <Tooltip title="Copy" arrow>
+            <IconButton
+              aria-label={props['aria-label']}
+              onMouseDown={handleCopyClickFunc(props.textToCopy)}
+            >
+              {<CopyAll />}
+            </IconButton>
+          </Tooltip>
         </Grid>
       </Grid>
     );
   }
   return (
     <>
-      {isCopied && (
+      {isCopied && props.useToast && (
         <Alert icon={<CheckIcon />} severity="success">
           {isCopied ? 'Copied!' : ''}
         </Alert>
       )}
-      <IconButton
-        aria-label={props['aria-label']}
-        onMouseDown={handleCopyClickFunc(props.textToCopy)}
-      >
-        {<CopyAll />}
-      </IconButton>
+      <Tooltip title="Copy" arrow>
+        <IconButton
+          aria-label={props['aria-label']}
+          onMouseDown={handleCopyClickFunc(props.textToCopy)}
+        >
+          {<CopyAll />}
+        </IconButton>
+      </Tooltip>
     </>
   );
 };
