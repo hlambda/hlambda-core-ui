@@ -265,7 +265,7 @@ const ResponsiveAppBar = () => {
               // Do things...
               const results = await get('/console/api/v1/trigger-reload');
               if (response.ok) {
-                toast.success('Server reloading...');
+                toast.success('Server reloading...', { hideProgressBar: true });
               } else {
                 toast.error('Request error!');
               }

@@ -137,6 +137,20 @@ function App() {
             element={
               <RequireAuth>
                 <Page title="Console | Hlambda">
+                  <CodePage
+                    type="shell"
+                    openDefaultShell
+                    defaultFile="metadata/apps/example-demo-app/router.demo.js"
+                  />
+                </Page>
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/shell-old"
+            element={
+              <RequireAuth>
+                <Page title="Console | Hlambda">
                   <CommandsPage />
                 </Page>
               </RequireAuth>
@@ -148,7 +162,6 @@ function App() {
               <RequireAuth>
                 <Page title="Console | Hlambda">
                   <CodePage
-                    key="configurations"
                     type="configurations"
                     defaultFile="metadata/apps/example-demo-app/hlambda-config.yaml"
                   />

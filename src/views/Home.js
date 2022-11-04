@@ -363,7 +363,13 @@ function Home() {
               }}
             ></StyledPreCodeTag>
 
-            <Grid container mt={'5px'}>
+            <Grid
+              container
+              mt={'5px'}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
               <Grid item>
                 <FormGroup>
                   <FormControlLabel
@@ -410,6 +416,7 @@ function Home() {
                   textToCopy={rawLogs}
                 />
               </Grid>
+
               <Grid item>
                 <Tooltip title="Clear All Logs" arrow>
                   <IconButton

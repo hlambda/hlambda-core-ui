@@ -32,8 +32,10 @@
   },
   "scripts": {
     "start": "export REACT_APP_DEVELOPMENT_MODE=true && export REACT_APP_GIT_HEAD_HASH=hotbuild-$(git rev-parse --short=8 HEAD) && react-scripts start",
-    "build": "export REACT_APP_GIT_HEAD_HASH=$(git rev-parse --short=8 HEAD) && react-scripts build",
-    "build:vsc": "cd hlambda-vscode && yarn build && cd .. && rm -rf ./public/vscode-payload && cp -r ./hlambda-vscode/dist ./public/vscode-payload",
+    "build": "export REACT_APP_GIT_HEAD_HASH=$(git rev-parse --short=8 HEAD) && react-scripts build && npm run copy-build-to-core",
+    "build:vsc": "cd hlambda-vscode && yarn build && cd .. && npm run copy-vscode-to-ui",
+    "copy-build-to-core": "rm -rf ../hlambda-core/public/console && cp -r ./build ../hlambda-core/public/console",
+    "copy-vscode-to-ui": "rm -rf ./public/vscode-payload && cp -r ./hlambda-vscode/dist ./public/vscode-payload",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint-fix": "./node_modules/.bin/eslint --fix --ext .js,.jsx --ignore-pattern public .",

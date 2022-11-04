@@ -45,7 +45,10 @@ function NewsPage() {
               '+ File uploads through console. (Useful when serving static content like images)',
               '+ Add visual studio code for web as the editor for the files.',
               '+ Implement PM2 to handle reloading for zero downtime.',
-              '- Tab complete in the shell, or shell via connect option in the VSC for Web Extension',
+              '- GitOps, metadata repository sync and auto reload on the new changes.',
+              '- Hasura integration, complete vscode extension.',
+              '- Save and replay requests from the console.',
+              '- Tab complete in the vscode shell.',
             ].map((item) => (
               <ListItem key={item}>
                 <ListItemText primary={item} />

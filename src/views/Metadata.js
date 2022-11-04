@@ -2,6 +2,7 @@ import React from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import { DateTime } from 'luxon';
 
@@ -114,42 +115,48 @@ function Metadata() {
       <TopBar />
       <Container maxWidth="xl" style={{ paddingTop: '20px' }}>
         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={12}>
-            {/* Metadata history: {JSON.stringify(metadataHistoryResult, null, 2)} */}
-            <Grid
-              container
-              rowSpacing={1}
-              columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-            >
-              <Grid item xs={12}>
-                History
-              </Grid>
-              <Grid item xs={12}>
-                Last Restarted:{' '}
-                {formatDate(metadataHistoryResult?.lastRestarted)}
-              </Grid>
-              <Grid item xs={12}>
-                Last Metadata Export:{' '}
-                {formatDate(metadataHistoryResult?.lastMetadataExport)}
-              </Grid>
-              <Grid item xs={12}>
-                Last Metadata Import:{' '}
-                {formatDate(metadataHistoryResult?.lastMetadataImport)}
-              </Grid>
-              <Grid item xs={12}>
-                Last Metadata Clear:{' '}
-                {formatDate(metadataHistoryResult?.lastMetadataClear)}
-              </Grid>
-            </Grid>
+          <Grid item xs={12} pb={'10px'} pt={'10px'}>
+            <Typography variant="h5">History</Typography>
           </Grid>
           <Grid item xs={12}>
             <Divider />
           </Grid>
           <Grid item xs={12}>
-            Metadata hash: {JSON.stringify(metadataResult)}
+            Metadata hash:{' '}
+            <Typography color={'yellow'} variant="span">
+              {JSON.stringify(metadataResult)}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
-            Here you can import / export metadata...
+            <Divider />
+          </Grid>
+          <Grid item xs={12}>
+            Last Restarted:{' '}
+            <Typography color={'yellow'} variant="span">
+              {formatDate(metadataHistoryResult?.lastRestarted)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            Last Metadata Export:{' '}
+            <Typography color={'yellow'} variant="span">
+              {formatDate(metadataHistoryResult?.lastMetadataExport)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            Last Metadata Import:{' '}
+            <Typography color={'yellow'} variant="span">
+              {formatDate(metadataHistoryResult?.lastMetadataImport)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            Last Metadata Clear:{' '}
+            <Typography color={'yellow'} variant="span">
+              {formatDate(metadataHistoryResult?.lastMetadataClear)}
+            </Typography>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Divider />
           </Grid>
           <Grid item xs={12}>
             <ConfirmationDialog
@@ -166,23 +173,38 @@ function Metadata() {
             />
           </Grid>
           <Grid item xs={12}>
-            <input id="your-file-input" type="file" name="metadata"></input>
+            <Divider />
           </Grid>
           <Grid item xs={12}>
-            <ConfirmationDialog
-              title="Metadata import"
-              openButtonText="Import metadata"
-              // message={`Press "OK" to proceed exporting metadata`}
-              confirmText="import metadata"
-              actionButtonText="Import metadata"
-              // cancelButtonText="Cancel"
-              actionFunction={() => {
-                // console.log('Import CLICKED!!!');
-                importMetadata();
-              }}
-            />
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={3}
+            >
+              <Grid item>
+                <ConfirmationDialog
+                  title="Metadata import"
+                  openButtonText="Import metadata"
+                  // message={`Press "OK" to proceed exporting metadata`}
+                  confirmText="import metadata"
+                  actionButtonText="Import metadata"
+                  // cancelButtonText="Cancel"
+                  actionFunction={() => {
+                    // console.log('Import CLICKED!!!');
+                    importMetadata();
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <input id="your-file-input" type="file" name="metadata"></input>
+              </Grid>
+            </Grid>
           </Grid>
-          <Divider />
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
           <Grid item xs={12}>
             <ConfirmationDialog
               title="Metadata reset"

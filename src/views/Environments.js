@@ -2,6 +2,7 @@ import React from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 
 import TopBar from './../components/top-bar';
 
@@ -124,14 +125,16 @@ function Errors() {
                 />
               </Grid>
               <Grid item>
-                <IconButton
-                  aria-label="toggle secrets visibility"
-                  //onClick={handleClickShowPassword}
-                  //onMouseUp={handleMouseDownPassword}
-                  onMouseDown={handleMouseDownPassword}
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
+                <Tooltip title="Toggle password visibility" arrow>
+                  <IconButton
+                    aria-label="toggle secrets visibility"
+                    //onClick={handleClickShowPassword}
+                    //onMouseUp={handleMouseDownPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </Tooltip>
               </Grid>
             </Grid>
           </Grid>

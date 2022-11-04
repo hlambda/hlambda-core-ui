@@ -1,0 +1,35 @@
+{
+	"name": "lsp-web-extension-sample-server",
+	"description": "Example implementation of a language server in a web extension.",
+	"version": "1.0.0",
+	"author": "Microsoft Corporation",
+	"license": "MIT",
+	"engines": {
+		"node": "*"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Microsoft/vscode-extension-samples"
+	},
+	"dependencies": {
+		"@babel/parser": "^7.17.3",
+		"@babel/types": "^7.17.0",
+		"@vue/compiler-sfc": "^3.2.41",
+		"browserify-fs": "^1.0.0",
+		"dotenv": "8.2.0",
+		"fast-glob": "^3.2.7",
+		"glob": "^7.2.0",
+		"graphql-config": "4.3.0",
+		"graphql-language-service": "^5.1.0",
+		"mkdirp": "^1.0.4",
+		"node-abort-controller": "^3.0.1",
+		"node-fetch": "^2.6.1",
+		"nullthrows": "^1.0.0",
+		"path-browserify": "^1.0.1",
+		"vscode-jsonrpc": "^8.0.1",
+		"vscode-languageserver": "^8.0.1",
+		"vscode-languageserver-textdocument": "^1.0.1",
+		"vscode-uri": "^3.0.2"
+	},
+	"scripts": {}
+}

@@ -17,8 +17,11 @@ import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 
 import CopyToClipboard from './../components/copy-to-clipboard/CopyToClipboard';
+import ClearAllIcon from '@mui/icons-material/ClearAll';
 
 const StyledPreCodeTag = styled('pre')(
   ({ theme }) => `
@@ -178,11 +181,34 @@ function Logs() {
               spacing={2}
             >
               <Grid item>
-                <CopyToClipboard
-                  useGrids={true}
-                  aria-label="copy content"
-                  textToCopy={rawLogs}
-                />
+                <Grid
+                  container
+                  direction="row"
+                  // justifyContent="flex-start"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  spacing={2}
+                >
+                  <Grid item>
+                    <CopyToClipboard
+                      useGrids={true}
+                      aria-label="copy content"
+                      textToCopy={rawLogs}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Tooltip title="Clear All Logs" arrow>
+                  <IconButton
+                    aria-label={'clear all logs'}
+                    onMouseUp={() => {
+                      getClearLogs();
+                    }}
+                  >
+                    {<ClearAllIcon />}
+                  </IconButton>
+                </Tooltip>
               </Grid>
             </Grid>
           </Grid>
@@ -195,70 +221,73 @@ function Logs() {
             }}
           />
         </div>
-        <Grid container>
+        <Grid container spacing={2} pb={'5rem'}>
           <Grid item>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch
-                    color="warning"
-                    checked={autoRefresh}
-                    onChange={_handleSwitchAutoRefreshChange}
-                  />
-                }
-                label="Auto refresh"
-              />
-            </FormGroup>
-          </Grid>
-          <Grid item>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch
-                    color="warning"
-                    checked={autoScroll}
-                    onChange={_handleSwitchChange}
-                  />
-                }
-                label="Auto scroll to bottom."
-              />
-            </FormGroup>
-          </Grid>
-          <Grid item>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Switch color="warning" disabled checked={snapToBottom} />
-                }
-                label="Auto snap"
-              />
-            </FormGroup>
-          </Grid>
-          <Grid item>
-            <Button
-              onClick={() => {
-                getClearLogs();
-              }}
+            <Grid
+              container
+              mt={'5px'}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
             >
-              Clear Logs
-            </Button>
+              <Grid item>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        color="warning"
+                        checked={autoRefresh}
+                        onChange={_handleSwitchAutoRefreshChange}
+                      />
+                    }
+                    label="Auto refresh"
+                  />
+                </FormGroup>
+              </Grid>
+              <Grid item>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        color="warning"
+                        checked={autoScroll}
+                        onChange={_handleSwitchChange}
+                      />
+                    }
+                    label="Auto scroll to bottom."
+                  />
+                </FormGroup>
+              </Grid>
+              <Grid item>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Switch color="warning" disabled checked={snapToBottom} />
+                    }
+                    label="Auto snap"
+                  />
+                </FormGroup>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Container>
-      <Fab
-        style={{
-          position: 'fixed',
-          right: '20px',
-          bottom: '20px',
-        }}
-        color="secondary"
-        aria-label="Refresh"
-        onClick={() => {
-          getLogs();
-        }}
-      >
-        <RefreshIcon />
-      </Fab>
+      <Tooltip title={'Refresh logs'} arrow>
+        <Fab
+          style={{
+            position: 'fixed',
+            right: '20px',
+            bottom: '20px',
+          }}
+          color="secondary"
+          aria-label="Refresh"
+          onClick={() => {
+            getLogs();
+          }}
+        >
+          <RefreshIcon />
+        </Fab>
+      </Tooltip>
     </>
   );
 }
